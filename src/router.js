@@ -1,24 +1,11 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from './pages/Login';
+import NotesList from "./pages/Notes/NotesList";
+import CreateNote from "./pages/Notes/CreateNote";
 
 export const routes = [
-  { name: 'Accueil', path: '/', exact: true, component: Home },
-  { name: 'Se connecter', path: '/login', component: Login },
+  { name: 'Accueil', path: '/', exact: true, component: Home, icon: 'home' },
+  { name: 'Se connecter', path: '/login', component: Login, icon: 'login' },
+  { name: 'Notes', path: '/notes', exact: true, component: NotesList, icon: 'file-search' },
+  { name: 'Nouvelle note', path: '/notes/new', component: CreateNote, icon: 'form' }
 ];
-
-function Router({ children }) {
-  return (
-    <BrowserRouter>
-      {children}
-      <Switch>
-        {routes.map(route => (
-          <Route {...route} />
-        ))}
-      </Switch>
-    </BrowserRouter>
-  )
-}
-
-export default Router;
