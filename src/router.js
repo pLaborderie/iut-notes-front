@@ -6,6 +6,8 @@ import CreateNote from "./pages/Notes/CreateNote";
 export const routes = [
   { name: 'Accueil', path: '/', exact: true, component: Home, icon: 'home' },
   { name: 'Se connecter', path: '/login', component: Login, icon: 'login' },
+  { name: 'Se déconnecter', path: '/logout', component: Login, icon: 'logout' },
+  { name: 'Mon compte', path: '/account', component: Login, icon: 'user' },
   { name: 'Notes', path: '/notes', exact: true, component: NotesList, icon: 'file-search' },
-  { name: 'Nouvelle note', path: '/notes/new', component: CreateNote, icon: 'form' }
+  { name: 'Nouvelle note', path: '/notes/new', component: CreateNote, icon: 'form' },
 ];
