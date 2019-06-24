@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+New front end for the IUT Notes note sharing website !
 
 ## Available Scripts
 
