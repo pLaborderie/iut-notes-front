@@ -23,8 +23,8 @@ const Title = styled.h3`
 function Header({ location, routes }) {
   return (
     <Sider
-      collapsible
       breakpoint="lg"
+      collapsedWidth="0"
     >
       <Title>
         IUT Notes
