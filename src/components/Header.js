@@ -7,6 +7,7 @@ const Sider = styled(Layout.Sider)`
   @media (max-width: 992px) {
     position: absolute !important;
     min-height: 100vh !important;
+    z-index: 3;
   }
 `;
 
