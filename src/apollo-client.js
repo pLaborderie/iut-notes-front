@@ -1,11 +1,11 @@
 import ApolloClient from 'apollo-boost';
 
 const token = localStorage.getItem('iut-notes-jwt');
-
+const { protocol, hostname, port } = window.location;
+const uri = `${protocol}//${hostname}:${port}/graphql`;
+console.log(uri);
 export default new ApolloClient({
-  uri: process.env.NODE_ENV !== 'production'
-    ? 'http://localhost:4000/graphql'
-    : '/',
+  uri,
   headers: {
     authorization: token ? `Bearer ${token}` : ''
   },
