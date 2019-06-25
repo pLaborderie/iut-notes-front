@@ -10,15 +10,25 @@ const Sider = styled(Layout.Sider)`
   }
 `;
 
+const Title = styled.h3`
+  height: 32px;
+  color: #FFF;
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 function Header({ location, routes }) {
   return (
     <Sider
+      collapsible
       breakpoint="lg"
-      collapsedWidth="0"
     >
-      <h3 style={{ height: '32px', color: '#FFF', margin: '16px' }}>
+      <Title>
         IUT Notes
-      </h3>
+      </Title>
       <Menu
         theme="dark"
         mode="inline"
