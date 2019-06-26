@@ -8,6 +8,7 @@ import allRoutes, { routes, loggedInRoutes, loggedOutRoutes } from './router';
 import Header from './components/Header';
 import client from './apollo-client';
 import UserContext from './context/UserContext';
+import Error404 from './pages/Errors/404';
 
 const { Content } = Layout;
 
@@ -32,14 +33,15 @@ function App() {
           <Layout>
             <Header routes={getNavRoutes()} />
             <Content style={{ padding: '10px 50px', flexGrow: 1, minHeight: '100vh' }}>
-              <Switch>
-                {loading
-                  ? <Skeleton active />
-                  : allRoutes.map(route => (
+              {loading
+                ? <Skeleton active />
+                : <Switch>
+                  {allRoutes.map(route => (
                     <Route key={`route-${route.path}`} {...route} />
-                  ))
-                }
-              </Switch>
+                  ))}
+                  <Route component={Error404} />
+                </Switch>
+              }
             </Content>
           </Layout>
         </BrowserRouter>
