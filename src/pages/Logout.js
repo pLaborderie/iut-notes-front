@@ -8,6 +8,7 @@ function Logout() {
 
   function logout() {
     if (token) {
+      localStorage.removeItem('iut-notes-jwt');
       setToken('');
     }
   }
