@@ -2,13 +2,15 @@ import React, { useContext } from 'react';
 import UserContext from '../context/UserContext';
 import { Button } from 'antd';
 import { Redirect } from 'react-router-dom';
+import { withApollo } from 'react-apollo';
 
-function Logout() {
+function Logout({ client }) {
   const { token, setToken } = useContext(UserContext);
 
   function logout() {
     if (token) {
       localStorage.removeItem('iut-notes-jwt');
+      client.resetStore();
       setToken('');
     }
   }
@@ -25,4 +27,4 @@ function Logout() {
   )
 }
 
-export default Logout;
+export default withApollo(Logout);

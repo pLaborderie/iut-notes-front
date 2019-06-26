@@ -39,6 +39,7 @@ function Login({ form, client }) {
       });
       message.success('Bienvenue sur IUT Notes !');
       localStorage.setItem('iut-notes-jwt', data.logIn);
+      client.resetStore();
       setToken(data.logIn);
     } catch (err) {
       console.error(err)
