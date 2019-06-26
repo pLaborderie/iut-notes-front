@@ -1,14 +1,14 @@
 {
   "short_name": "IUT Notes",
-  "name": "UIT Notes",
+  "name": "IUT Notes",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "favicon.png",
+      "sizes": "512x512 256x256 192x192 128x128 64x64 32x32 24x24 16x16",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/notes",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
