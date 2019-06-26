@@ -9,6 +9,7 @@ import Header from './components/Header';
 import client from './apollo-client';
 import UserContext from './context/UserContext';
 import Error404 from './pages/Errors/404';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const { Content } = Layout;
 
@@ -33,15 +34,17 @@ function App() {
           <Layout>
             <Header routes={getNavRoutes()} />
             <Content style={{ padding: '10px 50px', flexGrow: 1, minHeight: '100vh' }}>
-              {loading
-                ? <Skeleton active />
-                : <Switch>
-                  {allRoutes.map(route => (
-                    <Route key={`route-${route.path}`} {...route} />
-                  ))}
-                  <Route component={Error404} />
-                </Switch>
-              }
+              <ErrorBoundary>
+                {loading
+                  ? <Skeleton active />
+                  : <Switch>
+                    {allRoutes.map(route => (
+                      <Route key={`route-${route.path}`} {...route} />
+                    ))}
+                    <Route component={Error404} />
+                  </Switch>
+                }
+              </ErrorBoundary>
             </Content>
           </Layout>
         </BrowserRouter>
