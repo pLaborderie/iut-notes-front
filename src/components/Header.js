@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { NavLink, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -22,10 +22,13 @@ const Title = styled.h3`
 `;
 
 function Header({ location, routes }) {
+  const [broken, setBroken] = useState(false);
   return (
     <Sider
       breakpoint="lg"
-      collapsedWidth="0"
+      collapsible
+      collapsedWidth={broken ? '0' : '80'}
+      onBreakpoint={setBroken}
     >
       <Title>
         IUT Notes

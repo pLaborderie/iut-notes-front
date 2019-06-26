@@ -53,6 +53,7 @@ function CreateNote({ client, form }) {
       setCategory(data.categories[0].id);
     } catch (err) {
       console.error(err);
+      message.error('Erreur lors de la récupération des données.')
     }
   }
 
@@ -76,6 +77,7 @@ function CreateNote({ client, form }) {
     form.validateFields(async (err, values) => {
       if (err) {
         console.error(err);
+        message.error('Erreur lors de la validation du formulaire.');
       } else {
         await createNote({ ...values, category });
       }

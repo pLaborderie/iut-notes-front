@@ -1,6 +1,6 @@
 import React from 'react';
 import { Query } from "react-apollo";
-import { Skeleton, List } from 'antd';
+import { Skeleton, List, message } from 'antd';
 
 import { GET_NOTES } from '../../queries/notes';
 
@@ -10,8 +10,11 @@ function NotesList() {
       <h1>Liste des notes</h1>
       <Query query={GET_NOTES}>
         {({ loading, error, data }) => {
-          if (loading) return <Skeleton />
-          if (error) return 'Error! ' + error.message
+          if (loading) return <Skeleton active />
+          if (error) {
+            message.error('Error! ' + error.message);
+            return 'Veuillez rafraîchir la page.';
+          }
           return (
             <List
               header="Notes correspondantes"

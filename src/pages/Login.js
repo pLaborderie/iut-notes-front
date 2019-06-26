@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Form, Icon, Button, Input, } from 'antd';
+import { Form, Icon, Button, Input, message } from 'antd';
 import { withApollo } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import { LOGIN } from '../mutations/users';
@@ -24,7 +24,7 @@ function Login({ form, client }) {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (err) {
-        console.error(err);
+        message.error('Erreur lors de la validation du formulaire.');
       } else {
         login(values);
       }
@@ -37,10 +37,12 @@ function Login({ form, client }) {
         mutation: LOGIN,
         variables: user
       });
+      message.success('Bienvenue sur IUT Notes !');
       localStorage.setItem('iut-notes-jwt', data.logIn);
       setToken(data.logIn);
     } catch (err) {
       console.error(err)
+      message.error('Erreur lors de la connexion.')
     }
   }
 

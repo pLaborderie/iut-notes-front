@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Form, Icon, Button, Input, } from 'antd';
+import { Form, Icon, Button, Input, message } from 'antd';
 import { withApollo } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import { CREATE_USER, LOGIN } from '../mutations/users';
@@ -33,7 +33,8 @@ function Signup({ form, client }) {
           password
         });
       } else {
-        console.log(err);
+        console.error(err);
+        message.error('Erreur lors de la validation du formulaire.');
       }
     });
   }
@@ -52,8 +53,14 @@ function Signup({ form, client }) {
       }).then(res => {
         localStorage.setItem('iut-notes-jwt', res.data.logIn);
         setToken(res.data.logIn);
-      }).catch(err => console.error(err));
-    }).catch(err => console.error(err));
+      }).catch(err => {
+        console.error(err);
+        message.error('Erreur lors de la connexion au nouveau compte. Merci de réessayer.')
+      });
+    }).catch(err => {
+      console.error(err);
+      message.error('Erreur lors de la création du compte.')
+    });
   }
 
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
