@@ -137,7 +137,7 @@ function CreateNote({ client, form }) {
                 value={cat.id}
                 onChange={() => setCategory(cat.id)}
               >
-                {cat.name} - {cat.semester}
+                {`${cat.name} - ${cat.semester}`}
               </Select.Option>
             ))}
           </Select>
