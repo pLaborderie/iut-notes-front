@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react';
-import { Form, Button, Select, message } from 'antd';
+import { Form, Button, Select, message, Modal } from 'antd';
 import { withApollo } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 import { GET_CATEGORIES } from '../../queries/categories';
 import { CREATE_NOTE } from '../../mutations/notes';
@@ -27,6 +28,7 @@ function CreateNote({ client, form }) {
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState('');
   const [semester, setSemester] = useState('Tous');
+  const [displayMd, setDisplayMd] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -93,6 +95,13 @@ function CreateNote({ client, form }) {
     return semester === category.semester;
   }
 
+  function previewNote() {
+    Modal.info({
+      title: form.getFieldValue('title'),
+      content: <ReactMarkdown source={form.getFieldValue('content')} />
+    });
+  }
+
   if (!token) {
     return <Redirect to="/login" />
   }
@@ -144,6 +153,7 @@ function CreateNote({ client, form }) {
         </Form.Item>
         <FormInput
           label="Note"
+          hidden={displayMd}
           form={form}
           rules={[{ required: true, message: 'Veuillez saisir un contenu.' }]}
           name="content"
@@ -151,9 +161,10 @@ function CreateNote({ client, form }) {
           textarea
         />
         <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-          <Button type="primary" htmlType="submit">
+          <Button style={{ marginRight: 10 }} type="primary" htmlType="submit">
             Confirmer
           </Button>
+          <Button type="dashed" icon={'eye'} onClick={previewNote}>Aperçu</Button>
         </Form.Item>
       </Form>
     </>
