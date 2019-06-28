@@ -11,7 +11,10 @@ function NoteDetails(props) {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (loaded) {
-      hljs.initHighlighting();
+      // Highlight all code blocks
+      for (let block of document.getElementsByTagName('pre')) {
+        hljs.highlightBlock(block);
+      }
     }
   }, [loaded]);
   return (
@@ -23,12 +26,12 @@ function NoteDetails(props) {
           return 'Veuillez rafraîchir la page.';
         }
         return (
-          <div id="note-container">
+          <>
             <h1>{data.note.title}</h1>
             <hr />
             <ReactMarkdown source={data.note.content} />
             {setLoaded(true)}
-          </div>
+          </>
         )
       }}
     </Query>

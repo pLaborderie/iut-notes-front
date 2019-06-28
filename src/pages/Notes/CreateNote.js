@@ -115,7 +115,10 @@ function CreateNote({ client, form }) {
     const destroy = setInterval(() => {
       const doc = document.getElementById('preview');
       if (doc) {
-        hljs.highlightBlock(doc);
+        const codeBlocks = document.getElementsByTagName('pre');
+        for (let block of codeBlocks) {
+          hljs.highlightBlock(block);
+        }
         clearInterval(destroy)
       }
     }, 10)
