@@ -10,6 +10,7 @@ import client from './apollo-client';
 import UserContext from './context/UserContext';
 import Error404 from './pages/Errors/404';
 import ErrorBoundary from './components/ErrorBoundary';
+import NoteDetails from './pages/Notes/NoteDetails';
 
 const { Content } = Layout;
 
@@ -41,6 +42,7 @@ function App() {
                     {allRoutes.map(route => (
                       <Route key={`route-${route.path}`} {...route} />
                     ))}
+                    <Route path="/notes/:id" component={NoteDetails} />
                     <Route component={Error404} />
                   </Switch>
                 }

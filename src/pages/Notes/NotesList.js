@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from "react-apollo";
 import { Skeleton, List, message } from 'antd';
+import { Link } from 'react-router-dom';
 
 import { GET_NOTES } from '../../queries/notes';
 
@@ -25,7 +26,7 @@ function NotesList() {
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
-                    title={item.title}
+                    title={<Link to={`/notes/${item.id}`}>{item.title}</Link>}
                     description={
                       <p>
                         Auteur : {item.author.name} <br />

@@ -28,7 +28,6 @@ function CreateNote({ client, form }) {
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState('');
   const [semester, setSemester] = useState('Tous');
-  const [displayMd, setDisplayMd] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -153,7 +152,6 @@ function CreateNote({ client, form }) {
         </Form.Item>
         <FormInput
           label="Note"
-          hidden={displayMd}
           form={form}
           rules={[{ required: true, message: 'Veuillez saisir un contenu.' }]}
           name="content"
