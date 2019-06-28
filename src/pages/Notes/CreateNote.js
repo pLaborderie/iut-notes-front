@@ -4,6 +4,8 @@ import { Form, Button, Select, message, Modal } from 'antd';
 import { withApollo } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 
 import { GET_CATEGORIES } from '../../queries/categories';
 import { CREATE_NOTE } from '../../mutations/notes';
@@ -28,6 +30,7 @@ function CreateNote({ client, form }) {
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState('');
   const [semester, setSemester] = useState('Tous');
+  const previewEl = React.useRef(null);
 
   useEffect(() => {
     fetchCategories();
@@ -43,7 +46,13 @@ function CreateNote({ client, form }) {
         setCategory(filtered[0].id);
       }
     }
-  }, [semester])
+  }, [semester]);
+
+  useEffect(() => {
+    if (previewEl) {
+      hljs.initHighlighting();
+    }
+  }, [previewEl])
 
   async function fetchCategories() {
     try {
@@ -97,8 +106,19 @@ function CreateNote({ client, form }) {
   function previewNote() {
     Modal.info({
       title: form.getFieldValue('title'),
-      content: <ReactMarkdown source={form.getFieldValue('content')} />
+      content: (
+        <div id="preview">
+          <ReactMarkdown source={form.getFieldValue('content')} />
+        </div>
+      )
     });
+    const destroy = setInterval(() => {
+      const doc = document.getElementById('preview');
+      if (doc) {
+        hljs.highlightBlock(doc);
+        clearInterval(destroy)
+      }
+    }, 10)
   }
 
   if (!token) {
