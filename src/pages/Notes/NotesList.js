@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { Query } from "react-apollo";
 import { Skeleton, List, message } from 'antd';
@@ -9,11 +10,11 @@ function NotesList() {
   return (
     <>
       <h1>Liste des notes</h1>
-      <Query query={GET_NOTES}>
+      <Query query={GET_NOTES} pollInterval={5000}>
         {({ loading, error, data }) => {
           if (loading) return <Skeleton active />
           if (error) {
-            message.error('Error! ' + error.message);
+            message.error('Erreur ! ' + error.message);
             return 'Veuillez rafraîchir la page.';
           }
           return (
