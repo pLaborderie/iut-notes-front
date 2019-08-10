@@ -21,36 +21,75 @@ const Title = styled.h3`
   align-items: center;
 `;
 
+const Navbar = styled.nav`
+  background: #FFF;
+  padding: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  margin-bottom: 48px;
+  height: 48px;
+`;
+
+const Trigger = styled(Icon)`
+  font-size: 24px;
+  cursor: pointer;
+`
+
 function Header({ location, routes }) {
   const [broken, setBroken] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   return (
-    <Sider
-      breakpoint="lg"
-      collapsible
-      collapsedWidth={broken ? '0' : '80'}
-      onBreakpoint={setBroken}
-    >
-      <Title>
-        IUT Notes
-      </Title>
-      <Menu
-        theme="dark"
-        mode="inline"
-        style={{ lineHeight: '64px' }}
+    <>
+      {broken && (
+        <Navbar>
+          IUT Notes
+          <Trigger
+            type={collapsed ? 'menu-unfold' : 'menu-fold'}
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        </Navbar>
+      )}
+      <Sider
+        breakpoint="lg"
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={broken ? '0' : '80'}
+        onBreakpoint={setBroken}
+        trigger={broken ? null :
+          <Trigger
+            type={collapsed ? 'menu-unfold' : 'menu-fold'}
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        }
       >
-        {routes.map((route) => (
-          <Menu.Item
-            key={route.path}
-            className={location.pathname === route.path ? 'ant-menu-item-selected' : ''}
-          >
-            <NavLink to={route.path}>
-              {route.icon && <Icon type={route.icon} />}
-              <span>{route.name}</span>
-            </NavLink>
-          </Menu.Item>
-        ))}
-      </Menu>
-    </Sider>
+        <Title>
+          {collapsed ? null : 'IUT Notes'}
+        </Title>
+        <Menu
+          theme="dark"
+          mode="inline"
+          style={{ lineHeight: '64px' }}
+        >
+          {routes.map((route) => (
+            <Menu.Item
+              key={route.path}
+              className={location.pathname === route.path ? 'ant-menu-item-selected' : ''}
+            >
+              <NavLink to={route.path}>
+                {route.icon && <Icon type={route.icon} />}
+                <span>{route.name}</span>
+              </NavLink>
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Sider>
+    </>
   )
 }
 

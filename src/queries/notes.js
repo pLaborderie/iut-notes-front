@@ -1,19 +1,22 @@
 import gql from 'graphql-tag';
 
 export const GET_NOTES = gql`
-  query getAllNotes {
-    notes {
-      id
-      title
-      category {
-        name
-        semester
+  query getAllNotes($offset: Int, $limit: Int) {
+    notes(offset: $offset, limit: $limit) {
+      count
+      rows {
+        id
+        title
+        category {
+          name
+          semester
+        }
+        author {
+          name
+        }
+        createdAt
+        updatedAt
       }
-      author {
-        name
-      }
-      createdAt
-      updatedAt
     }
   }
 `;
