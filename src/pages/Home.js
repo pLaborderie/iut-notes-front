@@ -24,8 +24,14 @@ function Home() {
         <ul>
           <li>Créez un compte et partagez vos notes !</li>
           <li>
-            Contribuez au projet sur Github (pour l'instant privé,
-            deviendra public quand il sera plus développé).
+            Contribuez au projet sur
+            <a
+              href="https://github.com/plaborderie/iut-notes"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
+            </a>
           </li>
           <li>
             M'aider à mettre en place un système de modération, qui
