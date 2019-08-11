@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_NOTES = gql`
-  query getAllNotes($offset: Int, $limit: Int) {
-    notes(offset: $offset, limit: $limit) {
+  query getAllNotes($offset: Int, $limit: Int, $semester: String, $category: ID, $title: String) {
+    notes(offset: $offset, limit: $limit, semester: $semester, category: $category, title: $title) {
       count
       rows {
         id
