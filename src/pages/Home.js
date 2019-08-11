@@ -24,7 +24,7 @@ function Home() {
         <ul>
           <li>Créez un compte et partagez vos notes !</li>
           <li>
-            Contribuez au projet sur
+            Contribuez au projet sur&nbsp;
             <a
               href="https://github.com/plaborderie/iut-notes"
               target="_blank"
