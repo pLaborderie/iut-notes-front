@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { NavLink, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import MobileContext from '../context/MobileContext';
 
 const Sider = styled(Layout.Sider)`
   @media (max-width: 992px) {
@@ -42,13 +43,16 @@ const Trigger = styled(Icon)`
 `
 
 function Header({ location, routes }) {
-  const [broken, setBroken] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+  const { mobileMode, setMobileMode } = useContext(MobileContext);
+
   return (
     <>
-      {broken && (
+      {mobileMode && (
         <Navbar>
-          IUT Notes
+          <h3 style={{ margin: 0, padding: 0 }}>
+            IUT Notes
+          </h3>
           <Trigger
             type={collapsed ? 'menu-unfold' : 'menu-fold'}
             onClick={() => setCollapsed(!collapsed)}
@@ -59,9 +63,9 @@ function Header({ location, routes }) {
         breakpoint="lg"
         collapsible
         collapsed={collapsed}
-        collapsedWidth={broken ? '0' : '80'}
-        onBreakpoint={setBroken}
-        trigger={broken ? null :
+        collapsedWidth={mobileMode ? '0' : '80'}
+        onBreakpoint={setMobileMode}
+        trigger={mobileMode ? null :
           <Trigger
             type={collapsed ? 'menu-unfold' : 'menu-fold'}
             onClick={() => setCollapsed(!collapsed)}
