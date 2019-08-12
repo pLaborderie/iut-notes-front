@@ -1,18 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Select, message, Modal } from 'antd';
 import { withApollo } from 'react-apollo';
-import { makeStyles } from '@material-ui/styles';
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
-import cx from 'classnames';
 
 import { GET_CATEGORIES } from '../../queries/categories';
 import { CREATE_NOTE } from '../../mutations/notes';
 import FormInput from '../../components/FormInput';
-import Login from '../Login';
-import UserContext from '../../context/UserContext';
+import LoginBoundary from '../../components/LoginBoundary';
 
 const formItemLayout = {
   labelCol: {
@@ -26,18 +23,12 @@ const formItemLayout = {
 };
 
 const semesters = ['Tous', 'S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
-const useStyles = makeStyles({
-  hidden: {
-    display: 'none',
-  },
-});
+
 function CreateNote({ client, form }) {
-  const { token } = useContext(UserContext);
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState('');
   const [semester, setSemester] = useState('Tous');
   const previewEl = React.useRef(null);
-  const classes = useStyles();
 
   useEffect(() => {
     fetchCategories();
@@ -130,71 +121,68 @@ function CreateNote({ client, form }) {
     }, 10)
   }
 
-  const hiddenClass = cx({
-    [classes.hidden]: !token
-  });
-
   return (
     <>
       <h1>Créer une note</h1>
-      <Form {...formItemLayout} className={hiddenClass} onSubmit={handleSubmit}>
-        <FormInput
-          label="Titre"
-          form={form}
-          rules={[{ required: true, message: 'Veuillez saisir un titre.' }]}
-          name="title"
-          placeholder="Titre"
-        />
-        <Form.Item label="Semestre">
-          <Select
-            value={semester}
-            onChange={(sem) => setSemester(sem)}
-          >
-            {semesters.map(sem => (
-              <Select.Option
-                key={sem}
-                value={sem}
-              >
-                {sem}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item label="Catégorie">
-          <Select
-            showSearch
-            value={category}
-            onChange={cat => setCategory(cat)}
-            filterOption={searchCategories}
-            notFoundContent="Aucune catégorie trouvée."
-          >
-            {categories && categories.filter(filterCategories).map(cat => (
-              <Select.Option
-                key={cat.id}
-                value={cat.id}
-                onChange={() => setCategory(cat.id)}
-              >
-                {`${cat.name} - ${cat.semester}`}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <FormInput
-          label="Note"
-          form={form}
-          rules={[{ required: true, message: 'Veuillez saisir un contenu.' }]}
-          name="content"
-          placeholder="Contenu"
-          textarea
-        />
-        <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-          <Button style={{ marginRight: 10 }} type="primary" htmlType="submit">
-            Confirmer
-          </Button>
-          <Button type="dashed" icon={'eye'} onClick={previewNote}>Aperçu</Button>
-        </Form.Item>
-      </Form>
-      {!token && <Login />}
+      <LoginBoundary>
+        <Form {...formItemLayout} onSubmit={handleSubmit}>
+          <FormInput
+            label="Titre"
+            form={form}
+            rules={[{ required: true, message: 'Veuillez saisir un titre.' }]}
+            name="title"
+            placeholder="Titre"
+          />
+          <Form.Item label="Semestre">
+            <Select
+              value={semester}
+              onChange={(sem) => setSemester(sem)}
+            >
+              {semesters.map(sem => (
+                <Select.Option
+                  key={sem}
+                  value={sem}
+                >
+                  {sem}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Catégorie">
+            <Select
+              showSearch
+              value={category}
+              onChange={cat => setCategory(cat)}
+              filterOption={searchCategories}
+              notFoundContent="Aucune catégorie trouvée."
+            >
+              {categories && categories.filter(filterCategories).map(cat => (
+                <Select.Option
+                  key={cat.id}
+                  value={cat.id}
+                  onChange={() => setCategory(cat.id)}
+                >
+                  {`${cat.name} - ${cat.semester}`}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <FormInput
+            label="Note"
+            form={form}
+            rules={[{ required: true, message: 'Veuillez saisir un contenu.' }]}
+            name="content"
+            placeholder="Contenu"
+            textarea
+          />
+          <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+            <Button style={{ marginRight: 10 }} type="primary" htmlType="submit">
+              Confirmer
+            </Button>
+            <Button type="dashed" icon={'eye'} onClick={previewNote}>Aperçu</Button>
+          </Form.Item>
+        </Form>
+      </LoginBoundary>
     </>
   )
 }
