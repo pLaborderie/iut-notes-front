@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useQuery } from '@apollo/react-hooks';
-import { Skeleton, List, message, Pagination, Divider, Select, Input, Form } from 'antd';
+import { Skeleton, List, Pagination, Divider, Select, Input, Form } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { GET_NOTES } from '../../queries/notes';
@@ -72,12 +72,6 @@ function NotesList() {
     if (loading || !data || !data.notes) return <Skeleton active />
     if (error) {
       console.log(error);
-      // message.error('Erreur ! ' + error.name);
-      // error.graphQLErrors.forEach(({ message }, i) => {
-      //   console.group('Error ' + i);
-      //   console.log(message);
-      //   console.groupEnd();
-      // });
       return 'Veuillez rafraîchir la page.';
     }
     return (
