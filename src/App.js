@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
-import { Skeleton } from 'antd';
+import { Skeleton, message } from 'antd';
 import cx from 'classnames';
 
 import allRoutes, { routes, loggedInRoutes, loggedOutRoutes } from './router';
@@ -41,6 +41,11 @@ function App() {
     const jwt = localStorage.getItem('iut-notes-jwt') || '';
     setToken(jwt);
     setLoading(false);
+    window.addEventListener('session-expired', () => {
+      localStorage.removeItem('iut-notes-jwt');
+      setToken(null);
+      message.info('Session expirée, veuillez vous reconnecter.');
+    });
   }, []);
 
   function getNavRoutes() {

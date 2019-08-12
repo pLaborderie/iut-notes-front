@@ -71,7 +71,13 @@ function NotesList() {
   function renderList() {
     if (loading || !data || !data.notes) return <Skeleton active />
     if (error) {
-      message.error('Erreur ! ' + error.message);
+      console.log(error);
+      // message.error('Erreur ! ' + error.name);
+      // error.graphQLErrors.forEach(({ message }, i) => {
+      //   console.group('Error ' + i);
+      //   console.log(message);
+      //   console.groupEnd();
+      // });
       return 'Veuillez rafraîchir la page.';
     }
     return (
