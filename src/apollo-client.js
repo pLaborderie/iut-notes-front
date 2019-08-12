@@ -19,10 +19,8 @@ export default new ApolloClient({
   onError({ graphQLErrors, networkError }) {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-        const err = message.split(': ')[1];
-        if (extensions.code === '401' && err === 'TokenExpiredError') {
-          // Todo: Log out user
-          localStorage.removeItem('iut-notes-jwt');
+        if (extensions.code === '401' && message === 'TokenExpiredError') {
+          // Emit event to logout user
           const event = document.createEvent('Event');
           event.initEvent('session-expired', true, true);
           window.dispatchEvent(event);

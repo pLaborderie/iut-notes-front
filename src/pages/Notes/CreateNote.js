@@ -77,7 +77,6 @@ function CreateNote({ client, form }) {
       form.resetFields();
       message.success('Note créée !')
     } catch (err) {
-      message.error(err.message);
       console.error(err);
     }
   }
