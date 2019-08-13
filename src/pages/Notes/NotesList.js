@@ -29,7 +29,7 @@ function NotesList({ history }) {
   const classes = useStyles();
   const filters = { semester, category, title: searchBar };
   // Queries
-  const { loading, error, data, fetchMore, refetch } = useQuery(GET_NOTES, {
+  const { loading, error, data, fetchMore } = useQuery(GET_NOTES, {
     variables: {
       offset: (page - 1) * 5,
       limit: 5,
@@ -44,7 +44,7 @@ function NotesList({ history }) {
   const [deleteNote] = useMutation(DELETE_NOTE, {
     client,
     ignoreResults: true,
-    onCompleted: refetch,
+    refetchQueries: [{ query: GET_NOTES }],
   });
 
   useEffect(() => {
