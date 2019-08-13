@@ -42,8 +42,11 @@ function Login({ form, client }) {
       client.resetStore();
       setToken(data.logIn);
     } catch (err) {
-      console.error(err)
-      message.error('Erreur lors de la connexion.')
+      if (err.message === 'GraphQL error: User does not exist') {
+        message.error('Email ou mot de passe erronné')
+      } else {
+        message.error('Erreur lors de la connexion.')
+      }
     }
   }
 
