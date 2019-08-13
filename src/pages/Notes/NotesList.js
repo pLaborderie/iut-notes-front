@@ -29,7 +29,7 @@ function NotesList({ history }) {
   const classes = useStyles();
   const filters = { semester, category, title: searchBar };
   // Queries
-  const { loading, error, data, fetchMore } = useQuery(GET_NOTES, {
+  const { loading, error, data, fetchMore, refetch } = useQuery(GET_NOTES, {
     variables: {
       offset: (page - 1) * 5,
       limit: 5,
@@ -44,7 +44,7 @@ function NotesList({ history }) {
   const [deleteNote] = useMutation(DELETE_NOTE, {
     client,
     ignoreResults: true,
-    refetchQueries: [GET_NOTES],
+    onCompleted: refetch,
   });
 
   useEffect(() => {
@@ -71,7 +71,6 @@ function NotesList({ history }) {
 
   function getSortedCategories() {
     const categories = catData ? catData.categories : [];
-    console.log(semester);
     const res = !semester
       ? categories
       : categories.filter(cat => cat.semester === semester);
@@ -86,7 +85,6 @@ function NotesList({ history }) {
       content: `La note ${note.title} sera définitivement supprimée.
       Les données ne sont pas récupérables. Souhaitez-vous continuer ?`,
       onOk() {
-        // Todo: delete note
         deleteNote({ variables: { id: note.id } });
       },
       cancelText: 'Annuler',
@@ -164,7 +162,17 @@ function NotesList({ history }) {
           </Select>
         </Form.Item>
         <Form.Item label="Catégorie">
-          <Select onChange={value => setCategory(value)} defaultValue={category} allowClear showSearch>
+          <Select
+            onChange={value => setCategory(value)}
+            filterOption={(inputValue, option) => {
+              return option.props.children.toLowerCase()
+                .includes(inputValue.toLowerCase());
+            }}
+            defaultValue={category}
+            allowClear
+            showSearch
+            loading={catLoading}
+          >
             {!catLoading ? getSortedCategories() : null}
           </Select>
         </Form.Item>

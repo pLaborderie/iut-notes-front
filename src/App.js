@@ -13,6 +13,7 @@ import MobileContext from './context/MobileContext';
 import Error404 from './pages/Errors/404';
 import ErrorBoundary from './components/ErrorBoundary';
 import NoteDetails from './pages/Notes/NoteDetails';
+import EditNote from './pages/Notes/EditNote';
 import { makeStyles } from '@material-ui/styles';
 
 const { Content } = Layout;
@@ -71,6 +72,7 @@ function App() {
                       {allRoutes.map(route => (
                         <Route key={`route-${route.path}`} {...route} />
                       ))}
+                      <Route path="/notes/edit/:id" component={EditNote} />
                       <Route path="/notes/:id" component={NoteDetails} />
                       <Route component={Error404} />
                     </Switch>

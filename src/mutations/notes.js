@@ -12,7 +12,7 @@ export const DELETE_NOTE = gql`
     deleteNote(id: $id)
   }
 `;
-export const EEDIT_NOTE = gql`
+export const EDIT_NOTE = gql`
   mutation editNote($id: ID!, $title: String!, $content: String!, $category: ID!) {
     editNote(id: $id, title: $title, content: $content, category: $category)
   }
