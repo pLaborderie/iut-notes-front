@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { useQuery } from '@apollo/react-hooks';
-import { Skeleton, List, Pagination, Divider, Select, Input, Form } from 'antd';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { Skeleton, List, Pagination, Divider, Select, Input, Form, Button, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { GET_NOTES } from '../../queries/notes';
 import client from '../../apollo-client';
 import { GET_CATEGORIES } from '../../queries/categories';
+import { GET_CURRENT_USER } from '../../queries/users';
+import { DELETE_NOTE } from '../../mutations/notes';
 
 const useStyles = makeStyles({
   pagination: {
@@ -19,13 +21,19 @@ const useStyles = makeStyles({
 
 const semesters = ['Tous', 'S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
 
-function NotesList() {
+function NotesList({ history, client: apolloClient }) {
   const [page, setPage] = useState(1);
   const [semester, setSemester] = useState(semesters[0]);
   const [category, setCategory] = useState(null);
   const [searchBar, setSearchBar] = useState('');
   const classes = useStyles();
   const filters = { semester, category, title: searchBar };
+  // Mutations
+  const [deleteNote] = useMutation(DELETE_NOTE, {
+    client,
+    ignoreResults: true,
+    refetchQueries: [GET_NOTES],
+  });
   // Queries
   const { loading, error, data, fetchMore } = useQuery(GET_NOTES, {
     variables: {
@@ -36,10 +44,12 @@ function NotesList() {
     pollInterval: 5000,
     client: client,
   });
+  const { data: userData } = useQuery(GET_CURRENT_USER, { client });
   const { data: catData, loading: catLoading } = useQuery(GET_CATEGORIES, { client });
   useEffect(() => {
     loadMore(page);
   }, [semester, category, searchBar]);
+
   function updateQuery(prev, { fetchMoreResult }) {
     if (!fetchMoreResult) return prev;
     return fetchMoreResult.notes.rows;
@@ -68,6 +78,21 @@ function NotesList() {
     ));
   }
 
+  function showDeleteConfirm(note) {
+    Modal.confirm({
+      title: 'Supprimer la note ?',
+      content: `La note ${note.title} sera définitivement supprimée.
+      Les données ne sont pas récupérables. Souhaitez-vous continuer ?`,
+      onOk() {
+        // Todo: delete note
+        deleteNote({ variables: { id: note.id } });
+      },
+      cancelText: 'Annuler',
+      okButtonProps: { type: 'danger' },
+      mask: true,
+    });
+  }
+
   function renderList() {
     if (loading || !data || !data.notes) return <Skeleton active />
     if (error) {
@@ -83,7 +108,16 @@ function NotesList() {
           bordered
           locale={{ emptyText: 'Aucune note trouvée.' }}
           renderItem={item => (
-            <List.Item>
+            <List.Item
+              extra={
+                userData && userData.me && userData.me.id === item.author.id && (
+                  <React.Fragment>
+                    <Button shape="circle" icon="edit" onClick={() => history.push(`/notes/edit/${item.id}`)} />
+                    <Button shape="circle" icon="delete" onClick={() => showDeleteConfirm(item)} type="danger" />
+                  </React.Fragment>
+                )
+              }
+            >
               <List.Item.Meta
                 title={<Link to={`/notes/${item.id}`}>{item.title}</Link>}
                 description={

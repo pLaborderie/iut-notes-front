@@ -13,6 +13,7 @@ export const GET_NOTES = gql`
         }
         author {
           name
+          id
         }
         createdAt
         updatedAt
