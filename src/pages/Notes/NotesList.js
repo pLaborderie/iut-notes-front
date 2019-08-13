@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Skeleton, List, Pagination, Divider, Select, Input, Form, Button, Modal } from 'antd';
+import { Skeleton, List, Pagination, Divider, Select, Input, Form, Button, Modal, Checkbox, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { GET_NOTES } from '../../queries/notes';
@@ -26,8 +26,9 @@ function NotesList({ history }) {
   const [semester, setSemester] = useState(null);
   const [category, setCategory] = useState(null);
   const [searchBar, setSearchBar] = useState('');
+  const [fromUser, setFromUser] = useState(false);
   const classes = useStyles();
-  const filters = { semester, category, title: searchBar };
+  const filters = { semester, category, title: searchBar, fromUser };
   // Queries
   const { loading, error, data, fetchMore } = useQuery(GET_NOTES, {
     variables: {
@@ -49,7 +50,7 @@ function NotesList({ history }) {
 
   useEffect(() => {
     loadMore(page);
-  }, [semester, category, searchBar]);
+  }, [semester, category, searchBar, fromUser]);
 
   function updateQuery(prev, { fetchMoreResult }) {
     if (!fetchMoreResult) return prev;
@@ -150,39 +151,54 @@ function NotesList({ history }) {
       <h1>Liste des notes</h1>
       <Form layout="vertical">
         <Divider>Filtres</Divider>
-        <Form.Item label="Semestre">
-          <Select
-            allowClear
-            defaultValue={semester}
-            onChange={value => setSemester(value)}
-          >
-            {semesters.map(val => (
-              <Option value={val} key={val}>{val}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item label="Catégorie">
-          <Select
-            onChange={value => setCategory(value)}
-            filterOption={(inputValue, option) => {
-              return option.props.children.join('').toLowerCase()
-                .includes(inputValue.toLowerCase());
-            }}
-            defaultValue={category}
-            allowClear
-            showSearch
-            loading={catLoading}
-          >
-            {!catLoading ? getSortedCategories() : null}
-          </Select>
-        </Form.Item>
-        <Form.Item label="Titre">
-          <Input.Search
-            allowClear
-            placeholder="Titre de la note"
-            onSearch={value => setSearchBar(value)}
-          />
-        </Form.Item>
+        {userData && (
+          <Form.Item label="Paramètres">
+            <Checkbox checked={fromUser} onChange={() => setFromUser(!fromUser)}>
+              Mes notes uniquement
+            </Checkbox>
+          </Form.Item>
+        )}
+        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Form.Item label="Semestre">
+              <Select
+                allowClear
+                defaultValue={semester}
+                onChange={value => setSemester(value)}
+              >
+                {semesters.map(val => (
+                  <Option value={val} key={val}>{val}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Form.Item label="Catégorie">
+              <Select
+                onChange={value => setCategory(value)}
+                filterOption={(inputValue, option) => {
+                  return option.props.children.join('').toLowerCase()
+                    .includes(inputValue.toLowerCase());
+                }}
+                defaultValue={category}
+                allowClear
+                showSearch
+                loading={catLoading}
+              >
+                {!catLoading ? getSortedCategories() : null}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Form.Item label="Titre">
+              <Input.Search
+                allowClear
+                placeholder="Titre de la note"
+                onSearch={value => setSearchBar(value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
       {renderList()}
     </>
