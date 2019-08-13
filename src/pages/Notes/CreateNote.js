@@ -22,12 +22,12 @@ const formItemLayout = {
   },
 };
 
-const semesters = ['Tous', 'S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
+const semesters = ['S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
 
 function CreateNote({ client, form }) {
   const [categories, setCategories] = useState(null);
-  const [category, setCategory] = useState('');
-  const [semester, setSemester] = useState('Tous');
+  const [category, setCategory] = useState(null);
+  const [semester, setSemester] = useState(null);
   const previewEl = React.useRef(null);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function CreateNote({ client, form }) {
   }
 
   function filterCategories(category) {
-    if (semester === 'Tous') return true;
+    if (!semester) return true;
     return semester === category.semester;
   }
 
@@ -135,6 +135,7 @@ function CreateNote({ client, form }) {
           />
           <Form.Item label="Semestre">
             <Select
+              allowClear
               value={semester}
               onChange={(sem) => setSemester(sem)}
             >
@@ -151,6 +152,7 @@ function CreateNote({ client, form }) {
           <Form.Item label="Catégorie">
             <Select
               showSearch
+              allowClear
               value={category}
               onChange={cat => setCategory(cat)}
               filterOption={searchCategories}

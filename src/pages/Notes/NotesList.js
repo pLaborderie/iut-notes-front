@@ -19,21 +19,15 @@ const useStyles = makeStyles({
   },
 });
 
-const semesters = ['Tous', 'S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
+const semesters = ['S1', 'S2', 'S3', 'IPI', 'PEL', 'LP'];
 
-function NotesList({ history, client: apolloClient }) {
+function NotesList({ history }) {
   const [page, setPage] = useState(1);
-  const [semester, setSemester] = useState(semesters[0]);
+  const [semester, setSemester] = useState(null);
   const [category, setCategory] = useState(null);
   const [searchBar, setSearchBar] = useState('');
   const classes = useStyles();
   const filters = { semester, category, title: searchBar };
-  // Mutations
-  const [deleteNote] = useMutation(DELETE_NOTE, {
-    client,
-    ignoreResults: true,
-    refetchQueries: [GET_NOTES],
-  });
   // Queries
   const { loading, error, data, fetchMore } = useQuery(GET_NOTES, {
     variables: {
@@ -46,6 +40,13 @@ function NotesList({ history, client: apolloClient }) {
   });
   const { data: userData } = useQuery(GET_CURRENT_USER, { client });
   const { data: catData, loading: catLoading } = useQuery(GET_CATEGORIES, { client });
+  // Mutations
+  const [deleteNote] = useMutation(DELETE_NOTE, {
+    client,
+    ignoreResults: true,
+    refetchQueries: [GET_NOTES],
+  });
+
   useEffect(() => {
     loadMore(page);
   }, [semester, category, searchBar]);
@@ -70,7 +71,8 @@ function NotesList({ history, client: apolloClient }) {
 
   function getSortedCategories() {
     const categories = catData ? catData.categories : [];
-    const res = semester === 'Tous'
+    console.log(semester);
+    const res = !semester
       ? categories
       : categories.filter(cat => cat.semester === semester);
     return res.map(cat => (
@@ -152,6 +154,7 @@ function NotesList({ history, client: apolloClient }) {
         <Divider>Filtres</Divider>
         <Form.Item label="Semestre">
           <Select
+            allowClear
             defaultValue={semester}
             onChange={value => setSemester(value)}
           >
@@ -161,7 +164,7 @@ function NotesList({ history, client: apolloClient }) {
           </Select>
         </Form.Item>
         <Form.Item label="Catégorie">
-          <Select onChange={value => setCategory(value)} defaultValue={category}>
+          <Select onChange={value => setCategory(value)} defaultValue={category} allowClear showSearch>
             {!catLoading ? getSortedCategories() : null}
           </Select>
         </Form.Item>
