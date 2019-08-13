@@ -151,7 +151,7 @@ function NotesList({ history }) {
       <h1>Liste des notes</h1>
       <Form layout="vertical">
         <Divider>Filtres</Divider>
-        {userData && (
+        {userData && userData.me && (
           <Form.Item label="Paramètres">
             <Checkbox checked={fromUser} onChange={() => setFromUser(!fromUser)}>
               Mes notes uniquement
