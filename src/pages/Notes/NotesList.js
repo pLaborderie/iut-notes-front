@@ -165,7 +165,7 @@ function NotesList({ history }) {
           <Select
             onChange={value => setCategory(value)}
             filterOption={(inputValue, option) => {
-              return option.props.children.toLowerCase()
+              return option.props.children.join('').toLowerCase()
                 .includes(inputValue.toLowerCase());
             }}
             defaultValue={category}

@@ -47,17 +47,7 @@ function NotesForm({ client, form, type, editValues }) {
     refetchQueries: getRefetchQueries(),
   });
   useEffect(() => {
-    fetchCategories();
-    if (type === 'edit') {
-      // Load note data into form
-      const { title, content, category } = editValues;
-      form.setFieldsValue({
-        title,
-        content
-      });
-      setSemester(category.semester);
-      setCategory(category.id);
-    }
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -83,6 +73,21 @@ function NotesForm({ client, form, type, editValues }) {
     return type === 'edit'
       ? queries.concat({ query: GET_NOTE, variables: { id: editValues.id } })
       : queries;
+  }
+
+  async function loadData() {
+    await fetchCategories();
+    if (type === 'edit') {
+      // Load note data into form
+      const { title, content, category } = editValues;
+      form.setFieldsValue({
+        title,
+        content,
+        category: category.id
+      });
+      setSemester(category.semester);
+      // setCategory(category.id);
+    }
   }
 
   async function fetchCategories() {
@@ -200,7 +205,6 @@ function NotesForm({ client, form, type, editValues }) {
               <Select.Option
                 key={cat.id}
                 value={cat.id}
-                onChange={() => setCategory(cat.id)}
               >
                 {`${cat.name} - ${cat.semester}`}
               </Select.Option>
