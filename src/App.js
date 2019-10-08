@@ -59,7 +59,7 @@ function App() {
     } else {
       navRoutes = [...navRoutes, ...loggedOutRoutes];
     }
-    if (!loadingUser && !error && data.me.roles) {
+    if (!loadingUser && !error && data.me && data.me.roles) {
       if (data.me.roles.includes('admin')) {
         navRoutes = [...navRoutes, ...adminRoutes];
       }
