@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { Skeleton, message } from 'antd';
 import cx from 'classnames';
 
-import allRoutes, { routes, loggedInRoutes, loggedOutRoutes } from './router';
+import allRoutes, { routes, loggedInRoutes, loggedOutRoutes, adminRoutes } from './router';
 import Header from './components/Header';
 import client from './apollo-client';
 import UserContext from './context/UserContext';
@@ -15,6 +16,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import NoteDetails from './pages/Notes/NoteDetails';
 import EditNote from './pages/Notes/EditNote';
 import { makeStyles } from '@material-ui/styles';
+import { GET_CURRENT_USER } from './queries/users';
 
 const { Content } = Layout;
 
@@ -37,6 +39,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [mobileMode, setMobileMode] = useState(false);
   const classes = useStyles();
+  const { loading: loadingUser, error, data } = useQuery(GET_CURRENT_USER, { client });
   // Check if token is in localstorage
   useEffect(() => {
     const jwt = localStorage.getItem('iut-notes-jwt') || '';
@@ -50,7 +53,18 @@ function App() {
   }, []);
 
   function getNavRoutes() {
-    return routes.concat(token ? loggedInRoutes : loggedOutRoutes);
+    let navRoutes = routes;
+    if (token) {
+      navRoutes = [...navRoutes, ...loggedInRoutes];
+    } else {
+      navRoutes = [...navRoutes, ...loggedOutRoutes];
+    }
+    if (!loadingUser && !error && data.me.roles) {
+      if (data.me.roles.includes('admin')) {
+        navRoutes = [...navRoutes, ...adminRoutes];
+      }
+    }
+    return navRoutes;
   }
 
   const containerClass = cx({

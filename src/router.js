@@ -5,6 +5,7 @@ import CreateNote from "./pages/Notes/CreateNote";
 import Signup from "./pages/Signup";
 import Logout from "./pages/Logout";
 import Account from "./pages/Account";
+import Administration from './pages/Administation';
 
 export const routes = [
   { name: 'Accueil', path: '/', exact: true, component: Home, icon: 'home' },
@@ -22,4 +23,8 @@ export const loggedOutRoutes = [
   { name: 'Se connecter', path: '/login', component: Login, icon: 'login' },
 ]
 
-export default routes.concat(loggedInRoutes, loggedOutRoutes);
+export const adminRoutes = [
+  { name: 'Administration', path: '/admin', component: Administration, icon: 'database' },
+]
+
+export default routes.concat(loggedInRoutes, loggedOutRoutes, adminRoutes);
