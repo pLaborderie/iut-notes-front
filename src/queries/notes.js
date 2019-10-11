@@ -34,3 +34,9 @@ export const GET_NOTE = gql`
     }
   }
 `
+
+export const GET_NOTE_PDF = gql`
+  query getNotePdf($id: ID!) {
+    notePdf(id: $id)
+  }
+`;

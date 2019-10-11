@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Form, Button, Icon, Select } from 'antd';
+import { message, Form, Button, Select } from 'antd';
 import { withApollo } from 'react-apollo';
 import { useMutation } from '@apollo/react-hooks';
 
