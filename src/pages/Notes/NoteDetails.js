@@ -28,6 +28,7 @@ function NoteDetails(props) {
     if (!pdfLoading) {
       if (pdfError) {
         message.error('Erreur lors de la récupération du fichier');
+        console.error(pdfError);
       } else if (hasPdfData()) {
         const { blob, filename } = getPdfFile();
         downloadFile(blob, filename);
