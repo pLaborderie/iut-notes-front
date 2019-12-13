@@ -6,13 +6,13 @@ function Home() {
       <h1>Bienvenue sur IUT Notes !</h1>
       <p>
         IUT Notes est une plateforme de partage de notes de cours ou d'exercices,
-        créé pour les étudiants de l'IUT de Bayonne et du Pays Basque, en filière Informatique.
+        créée pour les étudiants de l'IUT de Bayonne et du Pays Basque, en filière Informatique.
       </p>
       <h3>Pourquoi IUT Notes ?</h3>
       <p>
         Je prenais les notes de cours en amphithéâtre sur mon ordinateur,
         en Markdown. Cela me permettait de formatter rapidement le texte
-        et d'avoir du syntax highlighting sur les bouts de code. Des amis
+        et d'avoir du syntax highlighting sur les fragments de code. Des amis
         m'ont demandé de leur partager mes notes, et j'ai donc décidé de
         mettre en ligne une plateforme de partage pour tous les étudiants.
       </p>
@@ -34,7 +34,7 @@ function Home() {
             </a>
           </li>
           <li>
-            M'aider à mettre en place un système de modération, qui
+            Aidez-moi à mettre en place un système de modération, qui
             deviendra nécessaire quand la plateforme sera utilisée par
             plus d'étudiants.
           </li>
