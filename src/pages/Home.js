@@ -22,7 +22,7 @@ function Home() {
         continue à être utilisée à l'IUT même après mon départ. Voilà les
         diverses façons de contribuer :
         <ul>
-          <li>Créez un compte et partagez vos notes ! :)</li>
+          <li>Créez un compte et partagez vos notes !</li>
           <li>
             Contribuez au projet sur&nbsp;
             <a
